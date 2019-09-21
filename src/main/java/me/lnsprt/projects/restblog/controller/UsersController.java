@@ -74,7 +74,7 @@ public class UsersController {
     public  ResponseEntity<Page<User>> getUsers(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                    @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                    @RequestParam(value= "sort", defaultValue = "signupDate") String sortProperty,
-                                                   @RequestParam(value= "sortDir", defaultValue = "desc") String sortDir){
+                                                   @RequestParam(value= "sortDir", defaultValue = "desc") String sortDir) {
         Page<User> users = userdb.findAll(PageRequest.of(page, size, new Sort(Sort.Direction.fromString(sortDir), sortProperty)));
 
         ResponseEntity.BodyBuilder response = ResponseEntity.ok();
@@ -107,7 +107,6 @@ public class UsersController {
                     .withRel(Link.REL_NEXT).expand();
             response.header(HttpHeaders.LINK, next.toString());
         }
-
 
         return response.body(users.map(user -> user.setPassword("*******")));
     }
@@ -192,15 +191,6 @@ public class UsersController {
     public ResponseEntity<User> getUser(@PathVariable("id")String id) {
         if(userdb.existsById(id)) {
             User u = userdb.findById(id);
-            /*
-            // users without admin privileges can only get their own information
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
-            String principal = (String)auth.getPrincipal();
-            if(!authorities.contains("ADMIN") && !principal.equals(u.getNickname()))
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            */
-
             Link self = ControllerLinkBuilder.linkTo(UsersController.class).slash(id).withSelfRel();
             Link collection = ControllerLinkBuilder.linkTo(UsersController.class).withRel(relProvider.getCollectionResourceRelFor(User.class));
             return ResponseEntity
@@ -388,7 +378,7 @@ public class UsersController {
             user.setPassword(passwordEncoder.encode(newUser.getPassword()));
             user.setNickname(newUser.getNickname());
             user.setEmail(newUser.getEmail());
-            user.setSignupDate(new Date()); // request body value or server generated value?
+            user.setSignupDate(new Date());
             user.setRoles(Collections.singletonList("READER")); // new users have role "READER" by default
             user.setSuspended(false);
 
@@ -419,9 +409,7 @@ public class UsersController {
     )
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity modifyUser(@PathVariable("id") String id, @RequestBody User updatedUser) {
-        /* single method with multiple options based on credentials and roles, or several method for various
-         * update actions with user resources?
-        */
+
         if(!userdb.existsById(id))
             return ResponseEntity.notFound().build();
         else {
@@ -512,6 +500,7 @@ public class UsersController {
                                                                @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                                @RequestParam(value= "sort", defaultValue = "reference") String sortProperty,
                                                                @RequestParam(value= "sortDir", defaultValue = "desc") String sortDir) {
+
         if(!userdb.existsById(id))
             return ResponseEntity.notFound().build();
         else {
@@ -581,6 +570,7 @@ public class UsersController {
                                                                    @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                                    @RequestParam(value= "sort", defaultValue = "reference") String sortProperty,
                                                                    @RequestParam(value= "sortDir", defaultValue = "desc") String sortDir) {
+
         try {
             Page<Subscription> subscriptions = subscriptionqi.executeQuery(searchQuery, PageRequest.of(page, size, new Sort(Sort.Direction.fromString(sortDir), sortProperty)));
 
@@ -693,6 +683,7 @@ public class UsersController {
     )
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createSubscription(@PathVariable("id") String id, @RequestBody Subscription subscription) {
+
         if(!userdb.existsById(id))
             return ResponseEntity.notFound().build();
         else {
@@ -704,7 +695,6 @@ public class UsersController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
 
-            // TODO: add duplicate entries checking
             subscription.setUser(id);
             subscription = subscriptiondb.save(subscription);
 

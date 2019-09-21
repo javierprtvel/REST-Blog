@@ -76,7 +76,7 @@ public class PostsController {
                                                 @RequestParam(value= "sort", defaultValue = "date") String sortProperty,
                                                 @RequestParam(value= "sortDir", defaultValue = "desc") String sortDir){
         Page<Post> posts;
-        if(author != null) { // return 404 if author doesn't exist?
+        if(author != null) {
             posts = postdb.findByAuthor(PageRequest.of(page, size, new Sort(Sort.Direction.fromString(sortDir), sortProperty)), author);
         }
         else {
@@ -297,9 +297,7 @@ public class PostsController {
     )
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity modifyPost(@PathVariable("id") String id, @RequestBody Post updatedPost) {
-        /* single method with multiple options based on credentials and roles, or several method for various
-         * update actions with post resources?
-         */
+
         if(!postdb.existsById(id))
             return ResponseEntity.notFound().build();
         else {
@@ -385,7 +383,7 @@ public class PostsController {
                                                          @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                          @RequestParam(value= "sort", defaultValue = "date") String sortProperty,
                                                          @RequestParam(value= "sortDir", defaultValue = "desc") String sortDir) {
-        // return 404 if user doesn't exist?
+
         if(!userdb.existsById(user))
             return ResponseEntity.notFound().build();
         else {
@@ -612,6 +610,7 @@ public class PostsController {
     )
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Comment> createComment(@PathVariable("id") String id, @RequestBody Comment newComment) {
+
         if(!postdb.existsById(id))
             return ResponseEntity.notFound().build();
         else {

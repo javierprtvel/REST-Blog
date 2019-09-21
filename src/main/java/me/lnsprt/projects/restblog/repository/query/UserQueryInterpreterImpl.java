@@ -37,8 +37,6 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
 
         //format: name1 [eq,lt,gt,like] value1 [[and,or] name2 [eq,lt,gt,like] value2]...
         //at the moment, only AND logical and single-value properties are supported
-        //System.out.println(query);
-
         Matcher logOpMatcher = logicalOperatorPattern.matcher(query);
         Matcher queryTermMatcher = queryTermPattern.matcher(query);
 
@@ -46,14 +44,12 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
         while(logOpMatcher.find()) {
             queryTerms++;
         }
-        //System.out.println("queryTerms: " + queryTerms);
 
         // get and invoke repository method
         queryTermMatcher.find();
         String property = queryTermMatcher.group("name");
         String operator = queryTermMatcher.group("operator");
         String value = queryTermMatcher.group("value");
-        //System.out.println(queryTermMatcher.group() + ": " + property + ", " + operator + ", " + value);
 
         Object[] values = new Object[queryTerms];
         Class<? extends Object>[] params = new Class[queryTerms + 1];
@@ -67,7 +63,6 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
             property = queryTermMatcher.group("name");
             operator = queryTermMatcher.group("operator");
             value = queryTermMatcher.group("value");
-            //System.out.println(queryTermMatcher.group() + ": " + property + ", " + operator + ", " + value);
 
             //check if query term is well-formed
             if(!parseQueryTerm(property, operator, value)) {
@@ -79,18 +74,13 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
             methodName = methodName + "And" + repositoryMethodNameBuilder(property, operator, value);
         }
 
-        //System.out.println(Arrays.toString(params));
-        //System.out.println(Arrays.toString(values));
         Method repositoryMethod = UserRepository.class.getMethod(methodName, params);
-        //System.out.println(repositoryMethod.getName());
-
         Object[] args = new Object[queryTerms + 1];
         args[0] = pageRequest;
         for(int i = 0; i < queryTerms; i++) {
             args[i + 1] = values[i];
         }
         result = (Page<User>)repositoryMethod.invoke(userdb, args);
-
 
         return result;
     }
@@ -110,7 +100,6 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
             case "suspended":
                 v = new Boolean(value);
                 v.getClass();
-                //System.out.println("Property class: Boolean|" + v.getClass());
                 break;
             default:
                 v = value;
@@ -136,18 +125,6 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
                 mappedOperator = "Contains";
 
         }
-
-        /*
-        switch(property) {
-            case "signupDate":
-                //2018-11-21T21:41:09+00:00
-                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                value = sdf2.format(sdf1.parse(value).getTime());
-                //System.out.println(value);
-                break;
-        }
-        */
 
         String methodName = mappedProperty + mappedOperator;
 

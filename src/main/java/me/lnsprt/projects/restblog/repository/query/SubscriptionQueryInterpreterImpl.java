@@ -33,8 +33,6 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
 
         //format: name1 [eq,lt,gt,like] value1 [[and,or] name2 [eq,lt,gt,like] value2]...
         //at the moment, only AND operations and single-value properties are supported
-        //System.out.println(query);
-
         Matcher logOpMatcher = logicalOperatorPattern.matcher(query);
         Matcher queryTermMatcher = queryTermPattern.matcher(query);
 
@@ -42,14 +40,12 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
         while(logOpMatcher.find()) {
             queryTerms++;
         }
-        //System.out.println("queryTerms: " + queryTerms);
 
         // get and invoke repository method
         queryTermMatcher.find();
         String property = queryTermMatcher.group("name");
         String operator = queryTermMatcher.group("operator");
         String value = queryTermMatcher.group("value");
-        //System.out.println(queryTermMatcher.group() + ": " + property + ", " + operator + ", " + value);
 
         Object[] values = new Object[queryTerms];
         Class<?>[] params = new Class[queryTerms + 1];
@@ -63,7 +59,6 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
             property = queryTermMatcher.group("name");
             operator = queryTermMatcher.group("operator");
             value = queryTermMatcher.group("value");
-            //System.out.println(queryTermMatcher.group() + ": " + property + ", " + operator + ", " + value);
 
             //check if query term is well-formed
             if(!parseQueryTerm(property, operator, value)) {
@@ -75,18 +70,13 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
             methodName = methodName + "And" + repositoryMethodNameBuilder(property, operator, value);
         }
 
-        //System.out.println(Arrays.toString(params));
-        //System.out.println(Arrays.toString(values));
         Method repositoryMethod = SubscriptionRepository.class.getMethod(methodName, params);
-        //System.out.println(repositoryMethod.getName());
-
         Object[] args = new Object[queryTerms + 1];
         args[0] = pageRequest;
         for(int i = 0; i < queryTerms; i++) {
             args[i + 1] = values[i];
         }
         result = (Page<Subscription>)repositoryMethod.invoke(subscriptiondb, args);
-
 
         return result;
     }
@@ -113,11 +103,6 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
                 mappedOperator = "Contains";
 
         }
-
-        /*
-        switch(property) {
-        }
-        */
 
         String methodName = mappedProperty + mappedOperator;
 
