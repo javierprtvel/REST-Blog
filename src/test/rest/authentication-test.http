@@ -1,0 +1,112 @@
+# authentication with credentials (returns JWT in Response Header)
+# correct 1
+POST http://localhost:8080/restblog/login HTTP/1.1
+Host: localhost:8080
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://localhost:8080
+Content-Type: application/json
+
+{
+  "username": "javier_porto-96",
+  "password": "testpassword"
+}
+###
+# correct 2
+POST http://localhost:8080/restblog/login HTTP/1.1
+Host: localhost:8080
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://localhost:8080
+Content-Type: application/json
+
+{
+  "username": "jaime_percan-82",
+  "password": "passwordtest"
+}
+###
+# correct 3
+POST http://localhost:8080/restblog/login HTTP/1.1
+Host: localhost:8080
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://localhost:8080
+Content-Type: application/json
+
+{
+  "username": "eleugoga",
+  "password": "passwordtest"
+}
+###
+# correct 4
+POST http://localhost:8080/restblog/login HTTP/1.1
+Host: localhost:8080
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Referer: http://localhost:8080
+Content-Type: application/json
+
+{
+  "username": "usuario_prueba1",
+  "password": "pwd1"
+}
+###
+# correct 5
+POST http://localhost:8080/restblog/login HTTP/1.1
+Host: localhost:8080
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Referer: http://localhost:8080
+Content-Type: application/json
+
+{
+  "username": "usuario_prueba2",
+  "password": "pwd2"
+}
+###
+# correct 6
+POST http://localhost:8080/restblog/login HTTP/1.1
+Host: localhost:8080
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Referer: http://localhost:8080
+Content-Type: application/json
+
+{
+  "username": "usuario_prueba3",
+  "password": "pwd3"
+}
+###
+# correct 7
+POST http://localhost:8080/restblog/login HTTP/1.1
+Host: localhost:8080
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://localhost:8080
+Content-Type: application/json
+
+{
+  "username": "usuario_prueba4",
+  "password": "pwd4"
+}
+###
+
+# incorrect 1
+POST http://localhost:8080/restblog/login HTTP/1.1
+Host: localhost:8080
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://localhost:8080
+Content-Type: application/json
+
+{
+  "username": "wrong_user",
+  "password": "testpassword"
+}
+
+###

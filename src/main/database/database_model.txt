@@ -1,0 +1,36 @@
+
+// users
+user {
+    name: String,
+    nickname: String,
+    password: String,
+    email: String,
+    signupDate: Date,
+    roles: ["role1", "role2", "role3", ...],
+    suspended: Boolean
+}
+
+// subscriptions
+subscription {
+    user: id // user id
+    type: String [author|tag]
+    reference: String [author nickname|tag value]
+}
+
+// posts
+post {
+    author: String, // user id
+    title: String,
+    body: String,
+    summary: String,
+    date: Date,
+    tags: ["tag1", "tag2", "tag3"]
+}
+
+// comments
+comment {
+    post: String, // post id
+    user: String, // user nickname
+    text: String,
+    date: Date
+}

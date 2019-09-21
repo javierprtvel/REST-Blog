@@ -1,0 +1,260 @@
+# get all users
+GET http://localhost:8080/restblog/users?sort=nickname&sortDir=asc
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTEiLCJpYXQiOjE1NDQ5ODk5MTcsImV4cCI6MTU0NDk5MzUxNywiUm9sZXMiOiJST0xFX0FETUlOLFJPTEVfRURJVE9SLFJPTEVfTU9ERVJBVE9SLFJPTEVfUkVBREVSIn0.HH8IPy9ANRZgISW9hH7EuQ914GLv5sKm3WrEtteqexqe6zgntzDutOJwoZdrKzaPxHAABu9hceB8pxHTv1eKuA
+Accept: application/json;charset=UTF-8
+
+###
+# search users by query
+GET http://localhost:8080/restblog/users/search?q=roles like EDITOR
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTEiLCJpYXQiOjE1NDQ5ODk5MTcsImV4cCI6MTU0NDk5MzUxNywiUm9sZXMiOiJST0xFX0FETUlOLFJPTEVfRURJVE9SLFJPTEVfTU9ERVJBVE9SLFJPTEVfUkVBREVSIn0.HH8IPy9ANRZgISW9hH7EuQ914GLv5sKm3WrEtteqexqe6zgntzDutOJwoZdrKzaPxHAABu9hceB8pxHTv1eKuA
+Accept: application/json;charset=UTF-8
+
+###
+# get user by nickname
+# correct
+#1
+GET http://localhost:8080/restblog/users/nickname/usuario_prueba2
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTEiLCJpYXQiOjE1NDUwNDE1OTUsImV4cCI6MTU0NTA0NTE5NSwiUm9sZXMiOiJST0xFX0FETUlOLFJPTEVfRURJVE9SLFJPTEVfTU9ERVJBVE9SLFJPTEVfUkVBREVSIn0.pxT2JqZSor10m-0CJrcm6jllUFzWFIPd3oRLq0LIr-jtbZulToZeEmK57ciRko6P4ECEFD3XiVrZflD3RvHfIA
+Accept: application/json;charset=UTF-8
+###
+#2
+GET http://localhost:8080/restblog/users/nickname/javier_porto-96
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTEiLCJpYXQiOjE1NDQ5ODk5MTcsImV4cCI6MTU0NDk5MzUxNywiUm9sZXMiOiJST0xFX0FETUlOLFJPTEVfRURJVE9SLFJPTEVfTU9ERVJBVE9SLFJPTEVfUkVBREVSIn0.HH8IPy9ANRZgISW9hH7EuQ914GLv5sKm3WrEtteqexqe6zgntzDutOJwoZdrKzaPxHAABu9hceB8pxHTv1eKuA
+Accept: application/json;charset=UTF-8
+###
+# incorrect
+GET http://localhost:8080/restblog/users/nickname/non_existingUser
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTEiLCJpYXQiOjE1NDQ5ODk5MTcsImV4cCI6MTU0NDk5MzUxNywiUm9sZXMiOiJST0xFX0FETUlOLFJPTEVfRURJVE9SLFJPTEVfTU9ERVJBVE9SLFJPTEVfUkVBREVSIn0.HH8IPy9ANRZgISW9hH7EuQ914GLv5sKm3WrEtteqexqe6zgntzDutOJwoZdrKzaPxHAABu9hceB8pxHTv1eKuA
+Accept: application/json;charset=UTF-8
+
+###
+# get user by id
+# correct
+GET http://localhost:8080/restblog/users/5c16a41f0540a04d6e095c66
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTEiLCJpYXQiOjE1NDQ5ODk5MTcsImV4cCI6MTU0NDk5MzUxNywiUm9sZXMiOiJST0xFX0FETUlOLFJPTEVfRURJVE9SLFJPTEVfTU9ERVJBVE9SLFJPTEVfUkVBREVSIn0.HH8IPy9ANRZgISW9hH7EuQ914GLv5sKm3WrEtteqexqe6zgntzDutOJwoZdrKzaPxHAABu9hceB8pxHTv1eKuA
+Accept: application/json;charset=UTF-8
+###
+
+# get users with role "editor"
+GET http://localhost:8080/restblog/users/editors?sort=nickname&sortDir=asc
+Accept: application/json;charset=UTF-8
+
+###
+
+# get existing user with role "editor" by id
+# correct
+GET http://localhost:8080/restblog/users/editors/5c16adea3d9e5a58c5d2b780
+Accept: application/json;charset=UTF-8
+###
+# get existing user with role "editor" by nickname
+# correct
+GET http://localhost:8080/restblog/users/editors/nickname/usuario_prueba2
+Accept: application/json;charset=UTF-8
+###
+# incorrect
+GET http://localhost:8080/restblog/users/editors/usuario_prueba1
+Accept: application/json;charset=UTF-8
+
+###
+# create new user
+#1
+POST http://localhost:8080/restblog/users
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "name": "Javier Porto Veloso",
+  "password": "testpassword",
+  "nickname": "javier_porto-96",
+  "email": "testmail@domtest.com",
+  "signupDate": "",
+  "roles": ["ADMIN", "EDITOR", "MODERATOR"],
+  "subscriptions": [],
+  "suspended": false
+}
+###
+#2
+POST http://localhost:8080/restblog/users
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "name": "Jaime Perez Canosa",
+  "password": "passwordtest",
+  "nickname": "jaime_percan-82",
+  "email": "mailtest@domtest.com",
+  "signupDate": "2017-03-04T00:00:05.000+0000",
+  "roles": ["EDITOR"],
+  "subscriptions": [],
+  "suspended": false
+}
+###
+#3
+POST http://localhost:8080/restblog/users
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "name": "Eleuterio Gomez Garcia",
+  "password": "passwordtest",
+  "nickname": "eleugoga",
+  "email": "eleumail@domtest.com",
+  "signupDate": "2018-05-10T00:00:05.000+0000",
+  "roles": ["READER"],
+  "subscriptions": [],
+  "suspended": false
+}
+
+###
+# modify existing user by id
+# correct
+PUT http://localhost:8080/restblog/users/5c16adea3d9e5a58c5d2b780
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTEiLCJpYXQiOjE1NDQ5ODk5MTcsImV4cCI6MTU0NDk5MzUxNywiUm9sZXMiOiJST0xFX0FETUlOLFJPTEVfRURJVE9SLFJPTEVfTU9ERVJBVE9SLFJPTEVfUkVBREVSIn0.HH8IPy9ANRZgISW9hH7EuQ914GLv5sKm3WrEtteqexqe6zgntzDutOJwoZdrKzaPxHAABu9hceB8pxHTv1eKuA
+Content-Type: application/json;charset=UTF-8
+
+{
+  "name": "Modified Name",
+  "nickname": "javier_porto-96",
+  "email": "modifymail@domtest.com",
+  "signupDate": "1989-01-01T00:00:01.985+0000",
+  "roles": ["EDITOR", "MODERATOR"],
+  "suspended": true
+}
+###
+# incorrect
+PUT http://localhost:8080/restblog/users/javier_porto-91
+Content-Type: application/json;charset=UTF-8
+
+{
+  "name": "Modified Porto Veloso",
+  "nickname": "javier_porto-96",
+  "email": "testmail@domtest.com",
+  "signupDate": 1970,
+  "roles": ["moderator"],
+  "suspended": false
+}
+
+###
+# delete existing user by id
+# correct
+DELETE http://localhost:8080/restblog/users/5c16adea3d9e5a58c5d2b780
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTEiLCJpYXQiOjE1NDQ5ODk5MTcsImV4cCI6MTU0NDk5MzUxNywiUm9sZXMiOiJST0xFX0FETUlOLFJPTEVfRURJVE9SLFJPTEVfTU9ERVJBVE9SLFJPTEVfUkVBREVSIn0.HH8IPy9ANRZgISW9hH7EuQ914GLv5sKm3WrEtteqexqe6zgntzDutOJwoZdrKzaPxHAABu9hceB8pxHTv1eKuA
+###
+# incorrect
+DELETE http://localhost:8080/restblog/users/non_existing_user
+
+###
+# get user subscriptions
+# correct
+GET http://localhost:8080/restblog/users/5c16a41f0540a04d6e095c66/subscriptions?sort=reference&sortDir=asc
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTQiLCJpYXQiOjE1NDQ5ODg2MzQsImV4cCI6MTU0NDk5MjIzNCwiUm9sZXMiOiJST0xFX1JFQURFUiJ9.PzMHN8e7qpmYrYeRjGsuoZkUjafyD2uBk1KpjCFveP3amohvqY70cjHy-UZUUUa8F45EcuAhxMk4U9HXbyrUOQ
+Accept: application/json;charset=UTF-8
+###
+# incorrect
+GET http://localhost:8080/restblog/users/non_exis2/subscriptions
+Accept: application/json;charset=UTF-8
+
+###
+# search subscriptions by query
+GET http://localhost:8080/restblog/users/subscriptions/search?q=user eq 5c213b943d9e5a5f8767df8c
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTQiLCJpYXQiOjE1NDQ5ODg2MzQsImV4cCI6MTU0NDk5MjIzNCwiUm9sZXMiOiJST0xFX1JFQURFUiJ9.PzMHN8e7qpmYrYeRjGsuoZkUjafyD2uBk1KpjCFveP3amohvqY70cjHy-UZUUUa8F45EcuAhxMk4U9HXbyrUOQ
+Accept: application/json;charset=UTF-8
+
+###
+# get subscription by id
+GET http://localhost:8080/restblog/users/subscriptions/5c16a9843d9e5a571894f793
+Accept: application/json;charset=UTF-8
+
+###
+# add subscription to existing user
+#1
+POST http://localhost:8080/restblog/users/5c16a41f0540a04d6e095c66/subscriptions
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTQiLCJpYXQiOjE1NDQ5ODg2MzQsImV4cCI6MTU0NDk5MjIzNCwiUm9sZXMiOiJST0xFX1JFQURFUiJ9.PzMHN8e7qpmYrYeRjGsuoZkUjafyD2uBk1KpjCFveP3amohvqY70cjHy-UZUUUa8F45EcuAhxMk4U9HXbyrUOQ
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+[
+  {
+    "user": "5c16a41f0540a04d6e095c66",
+    "type": "tag",
+    "reference": "science"
+  }
+]
+###
+#2
+POST http://localhost:8080/restblog/users/5c16a41f0540a04d6e095c66/subscriptions
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTQiLCJpYXQiOjE1NDQ5ODg2MzQsImV4cCI6MTU0NDk5MjIzNCwiUm9sZXMiOiJST0xFX1JFQURFUiJ9.PzMHN8e7qpmYrYeRjGsuoZkUjafyD2uBk1KpjCFveP3amohvqY70cjHy-UZUUUa8F45EcuAhxMk4U9HXbyrUOQ
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+[
+  {
+    "user": "5c16a41f0540a04d6e095c66",
+    "type": "tag",
+    "reference": "physics"
+  }
+]
+###
+#3
+POST http://localhost:8080/restblog/users/5c16a41f0540a04d6e095c663/subscriptions
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTQiLCJpYXQiOjE1NDQ5ODg2MzQsImV4cCI6MTU0NDk5MjIzNCwiUm9sZXMiOiJST0xFX1JFQURFUiJ9.PzMHN8e7qpmYrYeRjGsuoZkUjafyD2uBk1KpjCFveP3amohvqY70cjHy-UZUUUa8F45EcuAhxMk4U9HXbyrUOQ
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+[
+  {
+    "user": "5c16a41f0540a04d6e095c66",
+    "type": "tag",
+    "reference": "tic"
+  }
+]
+###
+#4
+POST http://localhost:8080/restblog/users/5c16a41f0540a04d6e095c66/subscriptions
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTQiLCJpYXQiOjE1NDQ5ODg2MzQsImV4cCI6MTU0NDk5MjIzNCwiUm9sZXMiOiJST0xFX1JFQURFUiJ9.PzMHN8e7qpmYrYeRjGsuoZkUjafyD2uBk1KpjCFveP3amohvqY70cjHy-UZUUUa8F45EcuAhxMk4U9HXbyrUOQ
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+[
+  {
+    "user": "5c16a41f0540a04d6e095c66",
+    "type": "tag",
+    "reference": "science"
+  }
+]
+###
+# modify existing subscription by id
+# correct
+PUT http://localhost:8080/restblog/users/5c16a41f0540a04d6e095c66/subscriptions/5c16a9843d9e5a571894f793
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTQiLCJpYXQiOjE1NDQ5ODg2MzQsImV4cCI6MTU0NDk5MjIzNCwiUm9sZXMiOiJST0xFX1JFQURFUiJ9.PzMHN8e7qpmYrYeRjGsuoZkUjafyD2uBk1KpjCFveP3amohvqY70cjHy-UZUUUa8F45EcuAhxMk4U9HXbyrUOQ
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "user": "5c16a41f0540a04d6e095c66",
+  "type": "tag",
+  "reference": "new reference"
+}
+
+###
+# incorrect
+PUT http://localhost:8080/restblog/users/javier_porto-96/subscriptions/sklafghsdfhgskh
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "type": "tag",
+  "reference": "physics"
+}
+
+###
+# delete existing subscription by id
+# correct
+DELETE http://localhost:8080/restblog/users/5c16a41f0540a04d6e095c66/subscriptions/5c16ab1e3d9e5a57c00e0a0f
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTQiLCJpYXQiOjE1NDQ5ODg2MzQsImV4cCI6MTU0NDk5MjIzNCwiUm9sZXMiOiJST0xFX1JFQURFUiJ9.PzMHN8e7qpmYrYeRjGsuoZkUjafyD2uBk1KpjCFveP3amohvqY70cjHy-UZUUUa8F45EcuAhxMk4U9HXbyrUOQ
+###
+# incorrect
+DELETE http://localhost:8080/restblog/users/javier_porto-96/subscriptions/sflkhsdflh
+
+###
+

@@ -1,0 +1,182 @@
+# get posts
+GET http://localhost:8080/restblog/posts
+Accept: application/json;charset=UTF-8
+
+###
+# search posts with query
+GET http://localhost:8080/restblog/posts/search/?q=title like Titulo&sort=title&sortDir=asc
+Accept: application/json;charset=UTF-8
+###
+# get one post by title
+# correct
+GET http://localhost:8080/restblog/posts/title/Titulo%20Publicacion%202
+Accept: application/json;charset=UTF-8
+###
+# incorrect
+GET http://localhost:8080/restblog/posts/Non%20existing%20Title
+Accept: application/json;charset=UTF-8
+
+###
+# get one post by id
+# correct
+GET http://localhost:8080/restblog/posts/5c16a5483d9e5a546141b5d2
+Accept: application/json;charset=UTF-8
+###
+# incorrect
+GET http://localhost:8080/restblog/posts/fsdglkhasgjkh
+Accept: application/json;charset=UTF-8
+
+###
+# get posts by author (user id)
+# correct
+GET http://localhost:8080/restblog/posts?author=5c16a41f0540a04d6e095c64&size=40
+Accept: application/json;charset=UTF-8
+###
+# incorrect
+GET http://localhost:8080/restblog/posts?author=non-existing-author
+Accept: application/json;charset=UTF-8
+
+###
+# create new post
+POST http://localhost:8080/restblog/posts
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDUwNDE2MzYsImV4cCI6MTU0NTA0NTIzNiwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.HY5D3nPVcpuYGE2Ei1jeKMVYaQvgd_AxK1yI3e8Hre1-7SWxW7sqbE2-JzC5BtzkkZ3YcQhLs_VlGCzaKB_X6A
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "author": "5c16a41f0540a04d6e095c64",
+  "title": "Introduction to Physics",
+  "summary": "This is a simple introduction to Physics for beginners",
+  "body": "Aenean feugiat quam vitae ipsum tempus, ut pharetra ligula finibus. Morbi vulputate, justo ut imperdiet vulputate, est libero accumsan elit, nec blandit lorem lacus id ex. Mauris cursus auctor faucibus. Quisque pharetra erat nec libero imperdiet, eu egestas nulla imperdiet. In rhoncus, elit id cursus elementum, quam lorem aliquet sapien, sed vulputate nisi mi eu felis. Integer pretium augue augue, sed scelerisque diam convallis ut. Aliquam fermentum pharetra elementum. Aenean consectetur sagittis ipsum, a varius ligula luctus a. Praesent vitae diam imperdiet, fermentum ex sit amet, sollicitudin velit. Donec sodales elementum dolor interdum vehicula. Etiam consectetur tortor in iaculis fringilla. Sed ut ex fringilla, imperdiet diam consequat, tempor nisi. Quisque sed sollicitudin metus. Aliquam urna lorem, vestibulum id purus nec, dictum fringilla nunc. Nam egestas euismod egestas. Phasellus luctus fringilla mattis. Morbi est libero, dapibus dictum odio et, facilisis tincidunt dolor. Aenean porta porta eros, vel viverra enim porttitor vel.Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut faucibus justo imperdiet condimentum tincidunt. Praesent id orci vel nibh euismod posuere ut non enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis at mi risus. Maecenas interdum eros vel urna sodales vulputate id sit amet felis. Nulla facilisi. Quisque nec egestas arcu. Donec volutpat erat lorem, et consectetur turpis feugiat quis. Pellentesque ornare enim neque, vel luctus risus faucibus sed. Quisque faucibus rutrum ligula eu efficitur. Phasellus sagittis nisl tellus, congue mattis ligula aliquam sit amet. Nunc id est eget ligula venenatis tempus eu eu ipsum. Morbi felis est, gravida et mauris non, maximus luctus ligula. Fusce consequat ultricies purus, vitae viverra nisl luctus ut.Fusce iaculis finibus varius. Vestibulum blandit pellentesque ante, nec tincidunt orci iaculis ac. Curabitur nisl dui, porttitor ac pellentesque auctor, venenatis ut tellus. Nunc pulvinar lectus quis pulvinar elementum. Nam porta nisi sit amet malesuada pretium. Vivamus justo velit, aliquam quis augue vitae, ultricies lacinia est. Mauris sagittis, purus a maximus pharetra, arcu lacus blandit tortor, vitae varius tellus sapien in ante. Morbi id magna vel quam tempus aliquam. Fusce fermentum diam non malesuada gravida. Maecenas sodales urna sed nibh egestas, a iaculis ex pretium. Ut vestibulum eget massa quis lobortis. Fusce cursus lobortis tortor vitae consequat. Vivamus congue faucibus mauris, non suscipit neque vehicula et. Cras mauris tortor, tincidunt ut molestie vel, molestie non lacus.",
+  "date": "2018-10-31T13:33:05.568+0000",
+  "tags": ["science", "physics", "knowledge"]
+}
+
+###
+# modify existing post
+# correct
+PUT http://localhost:8080/restblog/posts/5c16999b3cf3f7293191c6d2
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODY2NTAsImV4cCI6MTU0NDk5MDI1MCwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.Diejb2KIPJiArxj5I5yF_xyndvFKtuKaR_vM3FDqV3AnmMgdkLWBUKxmDTm2DTDL_jV1QYNgu3Lo7nOD_gdArQ
+Content-Type: application/json;charset=UTF-8
+
+{
+  "author": "5c16999b3cf3f7293191c6ce",
+  "title": "Titulo Publicacion 2 Nuevo",
+  "body": "Modified content",
+  "summary": "This introduction has been modified",
+  "date": "2018-10-31T13:33:05.568+0000",
+  "tags": ["science", "physics", "knowledge", "new tag"]
+}
+###
+# incorrect
+PUT http://localhost:8080/restblog/posts/5c16999b3cf3f72931fsdjhlh
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkRFRiJ9.eNqqViouTVKyUiotLk0sysyPLygqTU1KNFLSUcpMLFGyMjQ1MTKytDQyNNBRSq0ogAgYGxhZgASC8nNSi4F6g_x9XONdXTxD_IOUagEAAAD__w.k6K0QnxsNLJueZFq0IF57OfUk5ER8PYLOX_ZEWhOkp1-bStQR2SttEE-NPQqqQhcO-_Owqjj7O2wl5R3873yBA
+Content-Type: application/json;charset=UTF-8
+
+{
+  "author": "5c16999b3cf3f7293191c6c21",
+  "title": "Introduction to Physics",
+  "body": "Modified content",
+  "summary": "This introduction has been modified",
+  "date": "2018-10-31T13:33:05.568+0000",
+  "tags": ["science", "physics", "knowledge", "new tag"]
+}
+
+###
+# delete post by id
+# correct
+DELETE http://localhost:8080/restblog/posts/5c16999b3cf3f7293191c6ce
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODUyMTYsImV4cCI6MTU0NDk4ODgxNiwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.9u5YDsSkiNMbBY93Y06tHUZ2P8CuHzzMRlUVuS-3l6Uk8yZGGfaYU6rztGQ5lMJrpicZ9T7b_UhTOhwKAmL7tg
+###
+# correct
+DELETE http://localhost:8080/restblog/posts/Non%20existing%20Title
+
+###
+# get all comments from specific user
+# correct
+GET http://localhost:8080/restblog/posts/comments?user=5c16999b3cf3f7293191c6ce&sort=text&sortDir=desc
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODUyMTYsImV4cCI6MTU0NDk4ODgxNiwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.9u5YDsSkiNMbBY93Y06tHUZ2P8CuHzzMRlUVuS-3l6Uk8yZGGfaYU6rztGQ5lMJrpicZ9T7b_UhTOhwKAmL7tg
+Accept: application/json;charset=UTF-8
+###
+# incorrect
+GET http://localhost:8080/restblog/posts/comments?user=non_existing_user
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkRFRiJ9.eNqqViouTVKyUspKLMtMLYovyC8qyde1NFPSUcpMLFGyMjQ1MTKyNDM2stRRSq0ogAlYWoIEgvJzUouBeoP8fVzjg1wdXVyDlGoBAAAA__8.daqsCAktNsdP8dgtKM6QABG8hBzmskWvKbAZjqf5u7381CooYwQGRkiAv8E75WZeETxUFWhRRMNZqtmef2C7bQ
+Accept: application/json;charset=UTF-8
+
+###
+# search comments by query
+GET http://localhost:8080/restblog/posts/comments/search?q=user eq 5c16a41f0540a04d6e095c64
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODk0MDEsImV4cCI6MTU0NDk5MzAwMSwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.rQ50UEjJT4BD7PnsgObgSVLjV6pIVLM1TM-kH4lYzzo1vuavJ03KkcrpZjgyph29fepUt7psE8WYd8SaM5DNjw
+Accept: application/json;charset=UTF-8
+
+###
+# get comment by id
+GET http://localhost:8080/restblog/posts/comments/{id}
+Accept: application/json;charset=UTF-8
+
+###
+# create new comment in existing post
+# 1
+POST http://localhost:8080/restblog/posts/5c16999b3cf3f7293191c6d2/comments
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODUyMTYsImV4cCI6MTU0NDk4ODgxNiwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.9u5YDsSkiNMbBY93Y06tHUZ2P8CuHzzMRlUVuS-3l6Uk8yZGGfaYU6rztGQ5lMJrpicZ9T7b_UhTOhwKAmL7tg
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "post": "5c16999b3cf3f7293191c6d2",
+  "user": "5c16999b3cf3f7293191c6ce",
+  "text": "This is a test comment",
+  "date": "2018-11-13T14:33:00.000+0000"
+}
+###
+# 2
+POST http://localhost:8080/restblog/posts/5c16a41f0540a04d6e095c78/comments
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODUyMTYsImV4cCI6MTU0NDk4ODgxNiwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.9u5YDsSkiNMbBY93Y06tHUZ2P8CuHzzMRlUVuS-3l6Uk8yZGGfaYU6rztGQ5lMJrpicZ9T7b_UhTOhwKAmL7tg
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "post": "5c16a41f0540a04d6e095c78",
+  "user": "5c16a41f0540a04d6e095c64",
+  "text": "This is a second test comment",
+  "date": "2018-11-13T14:33:00.000+0000"
+}
+###
+# 3
+POST http://localhost:8080/restblog/posts/5c16999b3cf3f7293191c6d2/comments
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODUyMTYsImV4cCI6MTU0NDk4ODgxNiwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.9u5YDsSkiNMbBY93Y06tHUZ2P8CuHzzMRlUVuS-3l6Uk8yZGGfaYU6rztGQ5lMJrpicZ9T7b_UhTOhwKAmL7tg
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "post": "5c16999b3cf3f7293191c6d2",
+  "user": "5c16999b3cf3f7293191c6ce",
+  "text": "This is a third test comment",
+  "date": "2018-11-13T14:33:00.000+0000"
+}
+###
+# 4
+POST http://localhost:8080/restblog/posts/5c16999b3cf3f7293191c6d2/comments
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODUyMTYsImV4cCI6MTU0NDk4ODgxNiwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.9u5YDsSkiNMbBY93Y06tHUZ2P8CuHzzMRlUVuS-3l6Uk8yZGGfaYU6rztGQ5lMJrpicZ9T7b_UhTOhwKAmL7tg
+Accept: application/json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
+
+{
+  "post": "5c16999b3cf3f7293191c6d2",
+  "user": "5c16999b3cf3f7293191c6ce",
+  "text": "This is a fourth test comment",
+  "date": "2018-11-13T14:33:00.000+0000"
+}
+
+###
+# delete post comment by id
+# correct
+DELETE http://localhost:8080/restblog/posts/5c16999b3cf3f7293191c6d2/comments/5c169b0e3d9e5a4c919a81fd
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c3VhcmlvX3BydWViYTIiLCJpYXQiOjE1NDQ5ODUyMTYsImV4cCI6MTU0NDk4ODgxNiwiUm9sZXMiOiJST0xFX0VESVRPUixST0xFX01PREVSQVRPUixST0xFX1JFQURFUiJ9.9u5YDsSkiNMbBY93Y06tHUZ2P8CuHzzMRlUVuS-3l6Uk8yZGGfaYU6rztGQ5lMJrpicZ9T7b_UhTOhwKAmL7tg
+
+###
+# incorrect
+DELETE http://localhost:8080/restblog/posts/Introduction%20to%20Physics/comments/nfdgjhfgd
+
+###
+
