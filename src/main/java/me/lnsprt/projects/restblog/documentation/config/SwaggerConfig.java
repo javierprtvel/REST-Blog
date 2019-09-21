@@ -46,7 +46,7 @@ public class SwaggerConfig {
     private static ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
                 .title("REST-Blog API")
-                .description("REST API to consume the services of a headless CMS.")
+                .description("RESTful API of a headless CMS.")
                 .version("1.2.0")
                 .contact(
                         new Contact(

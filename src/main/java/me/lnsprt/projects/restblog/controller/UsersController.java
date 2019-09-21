@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/users")
 @Api(
-        tags = "REST-Blog Users API",
-        description = "REST API for CMS user and subscription management",
+        tags = "Users",
+        description = "User and subscription management",
         produces = "application/json, application/xml",
         consumes = "application/json, application/xml"
 )

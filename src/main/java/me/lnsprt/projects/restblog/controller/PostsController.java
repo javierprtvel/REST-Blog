@@ -33,8 +33,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/posts")
 @Api(
-        tags = "REST-Blog Posts API",
-        description = "REST API for CMS post and comment management",
+        tags = "Posts",
+        description = "Post and comment management",
         produces = "application/json, application/xml",
         consumes = "application/json, application/xml"
 )
