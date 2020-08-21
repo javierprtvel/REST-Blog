@@ -11,7 +11,7 @@ public class AccessControlConfig {
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
         hierarchy.setHierarchy(
-                "ROLE_ADMIN > ROLE_EDITOR > ROLE_MODERATOR > ROLE_READER"
+            "ROLE_ADMIN > ROLE_EDITOR > ROLE_MODERATOR > ROLE_READER"
         );
         return hierarchy;
     }

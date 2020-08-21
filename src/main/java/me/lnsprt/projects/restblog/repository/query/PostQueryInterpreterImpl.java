@@ -2,7 +2,6 @@ package me.lnsprt.projects.restblog.repository.query;
 
 import me.lnsprt.projects.restblog.model.Post;
 import me.lnsprt.projects.restblog.repository.PostRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,14 +32,14 @@ public class PostQueryInterpreterImpl implements PostQueryInterpreter {
 
     @Override
     public Page<Post> executeQuery(String query, Pageable pageRequest) throws Exception {
-        Page<Post> result = null;
+        Page<Post> result;
 
         //format: name1 [eq,lt,gt,like] value1 [[and,or] name2 [eq,lt,gt,like] value2]...
         //at the moment, only AND logical and single-value properties are supported
         Matcher logOpMatcher = logicalOperatorPattern.matcher(query);
         Matcher queryTermMatcher = queryTermPattern.matcher(query);
 
-        Integer queryTerms = 1;
+        int queryTerms = 1;
         while(logOpMatcher.find()) {
             queryTerms++;
         }
@@ -58,8 +56,8 @@ public class PostQueryInterpreterImpl implements PostQueryInterpreter {
                 (property.equals("tags"))? value.split(",") : value;
         params[0] = Pageable.class;
         params[1] = values[0].getClass();
-        String methodName = "findBy";
-        methodName = methodName + repositoryMethodNameBuilder(property, operator, value);
+        StringBuilder methodName = new StringBuilder("findBy");
+        methodName.append(repositoryMethodNameBuilder(property, operator, value));
         for(int q = 1; q < queryTerms; q++) {
             queryTermMatcher.find();
             property = queryTermMatcher.group("name");
@@ -74,23 +72,15 @@ public class PostQueryInterpreterImpl implements PostQueryInterpreter {
             values[q] = (property.equals("date"))? new SimpleDateFormat("yyyy-MM-dd").parse(value) :
                     (property.equals("tags"))? value.split(","): value;
             params[q + 1] = values[q].getClass();
-            methodName = methodName + "And" + repositoryMethodNameBuilder(property, operator, value);
+            methodName.append("And").append(repositoryMethodNameBuilder(property, operator, value));
         }
 
-        Method repositoryMethod = PostRepository.class.getMethod(methodName, params);
+        Method repositoryMethod = PostRepository.class.getMethod(methodName.toString(), params);
         Object[] args = new Object[queryTerms + 1];
         args[0] = pageRequest;
-        for(int i = 0; i < queryTerms; i++) {
-            args[i + 1] = values[i];
-        }
-        result = (Page<Post>)repositoryMethod.invoke(postdb, args);
+        System.arraycopy(values, 0, args, 1, queryTerms);
+        result = (Page<Post>) repositoryMethod.invoke(postdb, args);
 
-        return result;
-    }
-
-    @Override
-    public Collection<Post> executeQuery(String query) throws Exception {
-        Collection<Post> result = null;
         return result;
     }
 
@@ -99,7 +89,7 @@ public class PostQueryInterpreterImpl implements PostQueryInterpreter {
         return propertyPattern.matcher(property).matches();
     }
 
-    private String repositoryMethodNameBuilder(String property, String operator, String value) throws Exception {
+    private String repositoryMethodNameBuilder(String property, String operator, String value) {
         String mappedProperty = property.replaceFirst("[a-zA-Z]", property.substring(0, 1).toUpperCase());
 
         String mappedOperator = "";
@@ -117,8 +107,11 @@ public class PostQueryInterpreterImpl implements PostQueryInterpreter {
 
         }
 
-        String methodName = mappedProperty + mappedOperator;
+        return mappedProperty + mappedOperator;
+    }
 
-        return methodName;
+    @Override
+    public Collection<Post> executeQuery(String query) throws Exception {
+        return null;
     }
 }

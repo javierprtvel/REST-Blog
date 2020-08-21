@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,14 +28,14 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
 
     @Override
     public Page<Subscription> executeQuery(String query, Pageable pageRequest) throws Exception {
-        Page<Subscription> result = null;
+        Page<Subscription> result;
 
         //format: name1 [eq,lt,gt,like] value1 [[and,or] name2 [eq,lt,gt,like] value2]...
         //at the moment, only AND operations and single-value properties are supported
         Matcher logOpMatcher = logicalOperatorPattern.matcher(query);
         Matcher queryTermMatcher = queryTermPattern.matcher(query);
 
-        Integer queryTerms = 1;
+        int queryTerms = 1;
         while(logOpMatcher.find()) {
             queryTerms++;
         }
@@ -52,8 +51,8 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
         values[0] = value;
         params[0] = Pageable.class;
         params[1] = values[0].getClass();
-        String methodName = "findBy";
-        methodName = methodName + repositoryMethodNameBuilder(property, operator, value);
+        StringBuilder methodName = new StringBuilder("findBy");
+        methodName.append(repositoryMethodNameBuilder(property, operator, value));
         for(int q = 1; q < queryTerms; q++) {
             queryTermMatcher.find();
             property = queryTermMatcher.group("name");
@@ -67,15 +66,13 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
 
             values[q] = value;
             params[q + 1] = values[q].getClass();
-            methodName = methodName + "And" + repositoryMethodNameBuilder(property, operator, value);
+            methodName.append("And").append(repositoryMethodNameBuilder(property, operator, value));
         }
 
-        Method repositoryMethod = SubscriptionRepository.class.getMethod(methodName, params);
+        Method repositoryMethod = SubscriptionRepository.class.getMethod(methodName.toString(), params);
         Object[] args = new Object[queryTerms + 1];
         args[0] = pageRequest;
-        for(int i = 0; i < queryTerms; i++) {
-            args[i + 1] = values[i];
-        }
+        System.arraycopy(values, 0, args, 1, queryTerms);
         result = (Page<Subscription>)repositoryMethod.invoke(subscriptiondb, args);
 
         return result;
@@ -104,9 +101,7 @@ public class SubscriptionQueryInterpreterImpl implements SubscriptionQueryInterp
 
         }
 
-        String methodName = mappedProperty + mappedOperator;
-
-        return methodName;
+        return mappedProperty + mappedOperator;
     }
 
     @Override

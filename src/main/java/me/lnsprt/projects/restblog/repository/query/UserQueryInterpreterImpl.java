@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,14 +32,14 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
 
     @Override
     public Page<User> executeQuery(String query, Pageable pageRequest) throws Exception {
-        Page<User> result = null;
+        Page<User> result;
 
         //format: name1 [eq,lt,gt,like] value1 [[and,or] name2 [eq,lt,gt,like] value2]...
         //at the moment, only AND logical and single-value properties are supported
         Matcher logOpMatcher = logicalOperatorPattern.matcher(query);
         Matcher queryTermMatcher = queryTermPattern.matcher(query);
 
-        Integer queryTerms = 1;
+        int queryTerms = 1;
         while(logOpMatcher.find()) {
             queryTerms++;
         }
@@ -52,12 +51,12 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
         String value = queryTermMatcher.group("value");
 
         Object[] values = new Object[queryTerms];
-        Class<? extends Object>[] params = new Class[queryTerms + 1];
+        Class<?>[] params = new Class[queryTerms + 1];
         values[0] = propertyValueFactory(property, value);
         params[0] = Pageable.class;
         params[1] = values[0].getClass();
-        String methodName = "findBy";
-        methodName = methodName + repositoryMethodNameBuilder(property, operator, value);
+        StringBuilder methodName = new StringBuilder("findBy");
+        methodName.append(repositoryMethodNameBuilder(property, operator, value));
         for(int q = 1; q < queryTerms; q++) {
             queryTermMatcher.find();
             property = queryTermMatcher.group("name");
@@ -71,15 +70,13 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
 
             values[q] = propertyValueFactory(property, value);
             params[q + 1] = values[q].getClass();
-            methodName = methodName + "And" + repositoryMethodNameBuilder(property, operator, value);
+            methodName.append("And").append(repositoryMethodNameBuilder(property, operator, value));
         }
 
-        Method repositoryMethod = UserRepository.class.getMethod(methodName, params);
+        Method repositoryMethod = UserRepository.class.getMethod(methodName.toString(), params);
         Object[] args = new Object[queryTerms + 1];
         args[0] = pageRequest;
-        for(int i = 0; i < queryTerms; i++) {
-            args[i + 1] = values[i];
-        }
+        System.arraycopy(values, 0, args, 1, queryTerms);
         result = (Page<User>)repositoryMethod.invoke(userdb, args);
 
         return result;
@@ -98,7 +95,7 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
                 v = new SimpleDateFormat("yyyy-MM-dd").parse(value);
                 break;
             case "suspended":
-                v = new Boolean(value);
+                v = Boolean.valueOf(value);
                 v.getClass();
                 break;
             default:
@@ -126,9 +123,7 @@ public class UserQueryInterpreterImpl implements UserQueryInterpreter {
 
         }
 
-        String methodName = mappedProperty + mappedOperator;
-
-        return methodName;
+        return mappedProperty + mappedOperator;
     }
 
     @Override
