@@ -35,4 +35,5 @@ dependencies {
     implementation('com.fasterxml.jackson.dataformat:jackson-dataformat-xml')
     implementation('com.fasterxml.woodstox:woodstox-core')
     implementation('io.jsonwebtoken:jjwt:0.7.0')
+    compileOnly('org.projectlombok:lombok:1.18.12')
 }

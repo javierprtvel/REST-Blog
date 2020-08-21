@@ -425,7 +425,7 @@ public class UsersController {
             String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
             if((authorities.contains("ADMIN"))) { // is admin: can change roles AND suspend account
                 currentUser.setRoles(updatedUser.getRoles());
-                if(!currentUser.isSuspended().equals(updatedUser.isSuspended()))
+                if(!currentUser.isSuspended() == (updatedUser.isSuspended()))
                     currentUser.setSuspended(updatedUser.isSuspended());
             }
             else { // is moderator: can suspend account only
